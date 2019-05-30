@@ -107,10 +107,9 @@ class TodoApiClientTest : MockWebServerTest() {
     fun sendsAddTaskRequestToTheCorrectPath() {
         enqueueMockResponse(201, "addTaskResponse.json")
 
-        val response = apiClient.addTask(TaskDto("","","",false))
+        val response = apiClient.addTask(TaskDto("", "", "", false))
 
         assertTaskContainsExpectedValues(response.right!!)
-
     }
 
     private fun assertTaskContainsExpectedValues(task: TaskDto?) {
