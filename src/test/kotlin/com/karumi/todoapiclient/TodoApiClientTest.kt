@@ -5,6 +5,7 @@ import org.junit.Before
 import org.junit.Test
 import todoapiclient.TodoApiClient
 import todoapiclient.dto.TaskDto
+import todoapiclient.exception.UnknownApiError
 
 class TodoApiClientTest : MockWebServerTest() {
 
@@ -52,6 +53,15 @@ class TodoApiClientTest : MockWebServerTest() {
         val response = apiClient.allTasks
 
         assertEquals(emptyList<TaskDto>(), response.right)
+    }
+
+    @Test
+    fun throwsUnknownExceptionWhenTheStatusCodeReturnedIsUnknown() {
+        enqueueMockResponse(418)
+
+        val error = apiClient.allTasks.left
+
+        assertEquals(UnknownApiError(418), error)
     }
 
     private fun assertTaskContainsExpectedValues(task: TaskDto?) {
