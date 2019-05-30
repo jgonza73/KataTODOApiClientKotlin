@@ -1,6 +1,8 @@
 package com.karumi.todoapiclient
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Test
 import todoapiclient.TodoApiClient
@@ -99,6 +101,16 @@ class TodoApiClientTest : MockWebServerTest() {
         val error = apiClient.getTaskById(ANY_TASK_ID).left!!
 
         assertEquals(ItemNotFoundError, error)
+    }
+
+    @Test
+    fun sendsAddTaskRequestToTheCorrectPath() {
+        enqueueMockResponse(201, "addTaskResponse.json")
+
+        val response = apiClient.addTask(TaskDto("","","",false))
+
+        assertTaskContainsExpectedValues(response.right!!)
+
     }
 
     private fun assertTaskContainsExpectedValues(task: TaskDto?) {
